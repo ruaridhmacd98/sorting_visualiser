@@ -20,8 +20,6 @@ function bubbleSortHelper(
   let len = array.length;
   for (let i = 0; i < len; i++) {
     for (let j = 0; j < len - 1 - i; j++) {
-      animations.push([j, j+1]);
-      animations.push([j, j+1]);
       if (array[j] > array[j + 1]) {
 	let tmp = array[j];
 	array[j] = array[j + 1];
@@ -63,12 +61,6 @@ function doMerge(
   let i = startIdx;
   let j = middleIdx + 1;
   while (i <= middleIdx && j <= endIdx) {
-    // These are the values that we're comparing; we push them once
-    // to change their color.
-    animations.push([i, j]);
-    // These are the values that we're comparing; we push them a second
-    // time to revert their color.
-    animations.push([i, j]);
     if (auxiliaryArray[i] <= auxiliaryArray[j]) {
       // We overwrite the value at index k in the original array with the
       // value at index i in the auxiliary array.
@@ -82,26 +74,10 @@ function doMerge(
     }
   }
   while (i <= middleIdx) {
-    // These are the values that we're comparing; we push them once
-    // to change their color.
-    animations.push([i, i]);
-    // These are the values that we're comparing; we push them a second
-    // time to revert their color.
-    animations.push([i, i]);
-    // We overwrite the value at index k in the original array with the
-    // value at index i in the auxiliary array.
     animations.push([k, auxiliaryArray[i]]);
     mainArray[k++] = auxiliaryArray[i++];
   }
   while (j <= endIdx) {
-    // These are the values that we're comparing; we push them once
-    // to change their color.
-    animations.push([j, j]);
-    // These are the values that we're comparing; we push them a second
-    // time to revert their color.
-    animations.push([j, j]);
-    // We overwrite the value at index k in the original array with the
-    // value at index j in the auxiliary array.
     animations.push([k, auxiliaryArray[j]]);
     mainArray[k++] = auxiliaryArray[j++];
   }
