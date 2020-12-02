@@ -5,12 +5,58 @@ export function getBubbleSortAnimations(array) {
   return animations;
 }
 
+export function getCocktailSortAnimations(array) {
+  const animations = [];
+  if (array.length <= 1) return array;
+  cocktailSortHelper(array, animations);
+  return animations;
+}
+
 export function getMergeSortAnimations(array) {
   const animations = [];
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
   mergeSortHelper(array, 0, array.length - 1, auxiliaryArray, animations);
   return animations;
+}
+
+function swap(
+  i, j, array, animations
+) {
+  let tmp = array[i];
+  array[i] = array[j];
+  animations.push([i, array[j]]);
+  array[j] = tmp;
+  animations.push([j, tmp]);
+return [array, animations];
+}
+
+function cocktailSortHelper(array, animations) {
+
+    let n = array.length;
+    let sorted = false;
+    console.log(n)
+
+    while (!sorted) {
+        sorted = true;
+        for (let i = 0; i < n - 1; i++) {
+            if (array[i] > array[i + 1]){
+		[array, animations] = swap(i, i+1, array, animations)
+               sorted = false;
+            }
+   }
+
+   if (sorted)
+       break;
+   sorted = true;
+
+        for (let j = n - 1; j > 0; j--) {
+            if (array[j-1] > array[j]) {
+		[array, animations] = swap(j, j+1, array, animations)
+                sorted = false;
+            }
+        }
+    }
 }
 
 function bubbleSortHelper(
@@ -21,15 +67,7 @@ function bubbleSortHelper(
   for (let i = 0; i < len; i++) {
     for (let j = 0; j < len - 1 - i; j++) {
       if (array[j] > array[j + 1]) {
-	let tmp = array[j];
-	array[j] = array[j + 1];
-	animations.push([j, array[j+1]]);
-	array[j + 1] = tmp;
-	animations.push([j+1, tmp]);
-      }
-      else {
-	animations.push([j, array[j]]);
-	animations.push([j+1, array[j+1]]);
+	[array, animations] = swap(j, j+1, array, animations)
       }
     }
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getCocktailSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
@@ -62,6 +63,18 @@ export default class SortingVisualizer extends React.Component {
     }
   }
 
+  cocktailShakerSort() {
+    const animations = getCocktailSortAnimations(this.state.array);
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar');
+        const [barOneIdx, newHeight] = animations[i];
+        const barOneStyle = arrayBars[barOneIdx].style;
+        setTimeout(() => {
+          barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
+        }, i * ANIMATION_SPEED_MS);
+    }
+  }
+
   render() {
     const {array} = this.state;
 
@@ -81,6 +94,7 @@ export default class SortingVisualizer extends React.Component {
         <button onClick={() => this.quickSort()}>Quick Sort</button>
         <button onClick={() => this.heapSort()}>Heap Sort</button>
         <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+        <button onClick={() => this.cocktailShakerSort()}>Cocktail Shaker Sort</button>
       </div>
     );
   }
