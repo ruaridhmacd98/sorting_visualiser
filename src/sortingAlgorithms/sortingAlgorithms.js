@@ -52,7 +52,7 @@ function cocktailSortHelper(array, animations) {
 
         for (let j = n - 1; j > 0; j--) {
             if (array[j-1] > array[j]) {
-		[array, animations] = swap(j, j+1, array, animations)
+		[array, animations] = swap(j, j-1, array, animations)
                 sorted = false;
             }
         }
