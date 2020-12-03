@@ -2,13 +2,15 @@ import React from 'react';
 import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getCocktailSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getQuickSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getBogoSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 1;
+const ANIMATION_SPEED_MS = 0.25;
 
 // Change this value for the number of bars (value) in the array.
-const NUMBER_OF_ARRAY_BARS = 310;
+const NUMBER_OF_ARRAY_BARS = 610;
 
 export default class SortingVisualizer extends React.Component {
   constructor(props) {
@@ -31,20 +33,43 @@ export default class SortingVisualizer extends React.Component {
     this.setState({array});
   }
 
+  reversedArray() {
+    const array = [];
+    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+      array.push(randomIntFromInterval(1, 359));
+    }
+    array.sort(function(a, b){return a - b});
+    array.reverse();
+    this.setState({array});
+  }
+
+  nearlySorted() {
+    const array = [];
+    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+      array.push(randomIntFromInterval(1, 359));
+    }
+    array.sort(function(a, b){return a - b});
+    for (let k = 0; k < 10; k++) {
+      const i = randomIntFromInterval(0, NUMBER_OF_ARRAY_BARS)
+      const j = randomIntFromInterval(0, NUMBER_OF_ARRAY_BARS)
+      swap(i, j, array);
+    }
+    this.setState({array});
+  }
+
   mergeSort() {
     const animations = getMergeSortAnimations(this.state.array);
-    for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName('array-bar');
-        setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
-          const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
-        }, i * ANIMATION_SPEED_MS);
-    }
+    play_animations(animations);
   }
 
   quickSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
+    const animations = getQuickSortAnimations(this.state.array);
+    play_animations(animations);
+  }
+
+  bogoSort() {
+      const animations = getBogoSortAnimations(this.state.array);
+      play_animations(animations);
   }
 
   heapSort() {
@@ -53,26 +78,12 @@ export default class SortingVisualizer extends React.Component {
 
   bubbleSort() {
     const animations = getBubbleSortAnimations(this.state.array);
-    for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName('array-bar');
-        const [barOneIdx, newHeight] = animations[i];
-        const barOneStyle = arrayBars[barOneIdx].style;
-        setTimeout(() => {
-          barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
-        }, i * ANIMATION_SPEED_MS);
-    }
+    play_animations(animations);
   }
 
   cocktailShakerSort() {
     const animations = getCocktailSortAnimations(this.state.array);
-    for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName('array-bar');
-        const [barOneIdx, newHeight] = animations[i];
-        const barOneStyle = arrayBars[barOneIdx].style;
-        setTimeout(() => {
-          barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
-        }, i * ANIMATION_SPEED_MS);
-    }
+    play_animations(animations);
   }
 
   render() {
@@ -90,11 +101,13 @@ export default class SortingVisualizer extends React.Component {
             }}></div>
         ))}
         <button onClick={() => this.resetArray()}>Generate New Array</button>
+        <button onClick={() => this.reversedArray()}>New Reversed Array</button>
+        <button onClick={() => this.nearlySorted()}>Generate New Nearly Sorted Array</button>
         <button onClick={() => this.mergeSort()}>Merge Sort</button>
         <button onClick={() => this.quickSort()}>Quick Sort</button>
-        <button onClick={() => this.heapSort()}>Heap Sort</button>
         <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
         <button onClick={() => this.cocktailShakerSort()}>Cocktail Shaker Sort</button>
+        <button onClick={() => this.bogoSort()}>Bogo Sort</button>
       </div>
     );
   }
@@ -104,4 +117,23 @@ export default class SortingVisualizer extends React.Component {
 function randomIntFromInterval(min, max) {
   // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+
+function play_animations (animations) {
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar');
+        setTimeout(() => {
+          const [barOneIdx, newHeight] = animations[i];
+          const barOneStyle = arrayBars[barOneIdx].style;
+          barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
+        }, i * ANIMATION_SPEED_MS);
+      }
+}
+
+function swap(i, j, array) {
+  let tmp = array[i];
+  array[i] = array[j];
+  array[j] = tmp;
+return array;
 }
