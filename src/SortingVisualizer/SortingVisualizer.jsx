@@ -68,8 +68,8 @@ export default class SortingVisualizer extends React.Component {
   }
 
   bogoSort() {
-      const animations = getBogoSortAnimations(this.state.array);
-      play_animations(animations);
+    const animations = getBogoSortAnimations(this.state.array);
+    play_animations(animations);
   }
 
   heapSort() {

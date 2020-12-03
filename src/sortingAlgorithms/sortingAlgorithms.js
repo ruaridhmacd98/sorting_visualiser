@@ -56,7 +56,7 @@ function bogoSort(array, animations) {
   function shuffle(array, animations){
         var count = array.length, index;
         while(count > 0){
-            index = Math.floor(Math.random() * count);
+            index = Math.floor(Math.random() * array.length);
             count--;
             [array, animations] = swap(count, index, array, animations)
         }
