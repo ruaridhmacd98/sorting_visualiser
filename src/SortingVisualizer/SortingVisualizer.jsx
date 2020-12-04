@@ -9,13 +9,19 @@ import {getSelectionSort} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getBogoSort} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
-const options = [
+const algorithms = [
   { value: getMergeSort, label: 'Merge Sort' },
   { value: getQuickSort, label: 'Quick Sort' },
   { value: getSelectionSort, label: 'Selection Sort' },
   { value: getCocktailSort, label: 'Cocktail Shaker Sort' },
   { value: getBubbleSort, label: 'Bubble Sort' },
   { value: getBogoSort, label: 'Bogo Sort' },
+];
+
+const arrays = [
+  { value: randomArray, label: 'Random Array' },
+  { value: reversedArray, label: 'Reversed Array' },
+  { value: nearlySorted, label: 'Almost Sorted Array' },
 ];
 
 const ANIMATION_SPEED_MS = 0.1;
@@ -37,47 +43,21 @@ export default class SortingVisualizer extends React.Component {
     );
   };
 
+  chooseArray(arrayFunc) {
+	  console.log(arrayFunc)
+    var func = arrayFunc.value
+	  console.log(func)
+    const array = func()
+    this.setState({array});
+  }
+
   sort() {
     var algorithm = this.state.sortingAlgorithm.value;
-	  console.log(algorithm)
     const animations = algorithm(this.state.array);
     play_animations(animations);
   }
 
   componentDidMount() {
-    this.resetArray();
-  }
-
-  resetArray() {
-    const array = [];
-    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
-      array.push(randomIntFromInterval(0, 360));
-    }
-    this.setState({array});
-  }
-
-  reversedArray() {
-    const array = [];
-    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
-      array.push(randomIntFromInterval(1, 359));
-    }
-    array.sort(function(a, b){return a - b});
-    array.reverse();
-    this.setState({array});
-  }
-
-  nearlySorted() {
-    const array = [];
-    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
-      array.push(randomIntFromInterval(1, 359));
-    }
-    array.sort(function(a, b){return a - b});
-    for (let k = 0; k < 10; k++) {
-      const i = randomIntFromInterval(0, NUMBER_OF_ARRAY_BARS)
-      const j = randomIntFromInterval(0, NUMBER_OF_ARRAY_BARS)
-      swap(i, j, array);
-    }
-    this.setState({array});
   }
 
   render() {
@@ -87,13 +67,15 @@ export default class SortingVisualizer extends React.Component {
       <div className="array-container">
 	<Select
           onChange={this.selectAlgorithm}
-          options={options}
+          options={algorithms}
 	  placeholder='Select Sorting Algorithm'
         />
         <button onClick={() => this.sort()}>Sort</button>
-        <button onClick={() => this.resetArray()}>Generate New Array</button>
-        <button onClick={() => this.reversedArray()}>New Reversed Array</button>
-        <button onClick={() => this.nearlySorted()}>Generate New Nearly Sorted Array</button>
+	<Select
+          onChange={(e) => this.chooseArray(e)}
+          options={arrays}
+	  placeholder='Select Starting Array'
+        />
 	<br/>
         {array.map((value, idx) => (
           <div
@@ -126,6 +108,38 @@ function play_animations (animations) {
           barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
         }, i * ANIMATION_SPEED_MS);
       }
+}
+
+function randomArray() {
+  const array = [];
+  for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+    array.push(randomIntFromInterval(0, 360));
+  }
+  return array
+}
+
+function reversedArray() {
+  const array = [];
+  for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+    array.push(randomIntFromInterval(1, 359));
+  }
+  array.sort(function(a, b){return a - b});
+  array.reverse();
+  return array
+}
+
+function nearlySorted() {
+  const array = [];
+  for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++) {
+    array.push(randomIntFromInterval(1, 359));
+  }
+  array.sort(function(a, b){return a - b});
+  for (let k = 0; k < 10; k++) {
+    const i = randomIntFromInterval(0, NUMBER_OF_ARRAY_BARS)
+    const j = randomIntFromInterval(0, NUMBER_OF_ARRAY_BARS)
+    swap(i, j, array);
+  }
+  return array
 }
 
 function swap(i, j, array) {
