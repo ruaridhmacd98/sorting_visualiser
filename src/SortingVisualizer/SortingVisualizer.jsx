@@ -1,16 +1,24 @@
 import React from 'react';
-import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getCocktailSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getQuickSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getSelectionSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getBogoSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import Select from 'react-select';
+import 'react-dropdown/style.css';
+import {getMergeSort} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getBubbleSort} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getCocktailSort} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getQuickSort} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getSelectionSort} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getBogoSort} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
-// Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 0.1;
+const options = [
+  { value: getMergeSort, label: 'Merge Sort' },
+  { value: getQuickSort, label: 'Quick Sort' },
+  { value: getSelectionSort, label: 'Selection Sort' },
+  { value: getCocktailSort, label: 'Cocktail Shaker Sort' },
+  { value: getBubbleSort, label: 'Bubble Sort' },
+  { value: getBogoSort, label: 'Bogo Sort' },
+];
 
-// Change this value for the number of bars (value) in the array.
+const ANIMATION_SPEED_MS = 0.1;
 const NUMBER_OF_ARRAY_BARS = 610;
 
 export default class SortingVisualizer extends React.Component {
@@ -19,7 +27,21 @@ export default class SortingVisualizer extends React.Component {
 
     this.state = {
       array: [],
+      sortingAlgorithm: null,
     };
+  }
+
+  selectAlgorithm = sortingAlgorithm => {
+    this.setState(
+      { sortingAlgorithm: sortingAlgorithm },
+    );
+  };
+
+  sort() {
+    var algorithm = this.state.sortingAlgorithm.value;
+	  console.log(algorithm)
+    const animations = algorithm(this.state.array);
+    play_animations(animations);
   }
 
   componentDidMount() {
@@ -58,45 +80,21 @@ export default class SortingVisualizer extends React.Component {
     this.setState({array});
   }
 
-  mergeSort() {
-    const animations = getMergeSortAnimations(this.state.array);
-    play_animations(animations);
-  }
-
-  quickSort() {
-    const animations = getQuickSortAnimations(this.state.array);
-    play_animations(animations);
-  }
-
-  selectionSort() {
-    const animations = getSelectionSortAnimations(this.state.array);
-    play_animations(animations);
-  }
-
-  bogoSort() {
-    const animations = getBogoSortAnimations(this.state.array);
-    play_animations(animations);
-  }
-
-  heapSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
-  }
-
-  bubbleSort() {
-    const animations = getBubbleSortAnimations(this.state.array);
-    play_animations(animations);
-  }
-
-  cocktailShakerSort() {
-    const animations = getCocktailSortAnimations(this.state.array);
-    play_animations(animations);
-  }
-
   render() {
     const {array} = this.state;
 
     return (
       <div className="array-container">
+	<Select
+          onChange={this.selectAlgorithm}
+          options={options}
+	  placeholder='Select Sorting Algorithm'
+        />
+        <button onClick={() => this.sort()}>Sort</button>
+        <button onClick={() => this.resetArray()}>Generate New Array</button>
+        <button onClick={() => this.reversedArray()}>New Reversed Array</button>
+        <button onClick={() => this.nearlySorted()}>Generate New Nearly Sorted Array</button>
+	<br/>
         {array.map((value, idx) => (
           <div
             className="array-bar"
@@ -106,15 +104,7 @@ export default class SortingVisualizer extends React.Component {
               height: `500px`,
             }}></div>
         ))}
-        <button onClick={() => this.resetArray()}>Generate New Array</button>
-        <button onClick={() => this.reversedArray()}>New Reversed Array</button>
-        <button onClick={() => this.nearlySorted()}>Generate New Nearly Sorted Array</button>
-        <button onClick={() => this.mergeSort()}>Merge Sort</button>
-        <button onClick={() => this.quickSort()}>Quick Sort</button>
-        <button onClick={() => this.selectionSort()}>Selection Sort</button>
-        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-        <button onClick={() => this.cocktailShakerSort()}>Cocktail Shaker Sort</button>
-        <button onClick={() => this.bogoSort()}>Bogo Sort</button>
+	<br/>
       </div>
     );
   }

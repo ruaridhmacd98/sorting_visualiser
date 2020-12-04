@@ -1,36 +1,36 @@
-export function getBubbleSortAnimations(array) {
+export function getBubbleSort(array) {
   const animations = [];
   if (array.length <= 1) return array;
   bubbleSort(array, animations);
   return animations;
 }
 
-export function getCocktailSortAnimations(array) {
+export function getCocktailSort(array) {
   const animations = [];
   if (array.length <= 1) return array;
   cocktailSort(array, animations);
   return animations;
 }
 
-export function getQuickSortAnimations(array) {
+export function getQuickSort(array) {
   const animations = [];
   quickSort(array, animations, 0, array.length-1);
   return animations;
 }
 
-export function getSelectionSortAnimations(array) {
+export function getSelectionSort(array) {
   const animations = [];
   selectionSort(array, animations);
   return animations;
 }
 
-export function getBogoSortAnimations(array) {
+export function getBogoSort(array) {
   const animations = [];
   bogoSort(array, animations);
   return animations;
 }
 
-export function getMergeSortAnimations(array) {
+export function getMergeSort(array) {
   const animations = [];
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
