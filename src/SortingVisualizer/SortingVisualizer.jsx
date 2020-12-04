@@ -3,11 +3,12 @@ import {getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js'
 import {getBubbleSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getCocktailSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getQuickSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getSelectionSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import {getBogoSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 // Change this value for the speed of the animations.
-const ANIMATION_SPEED_MS = 0.25;
+const ANIMATION_SPEED_MS = 0.1;
 
 // Change this value for the number of bars (value) in the array.
 const NUMBER_OF_ARRAY_BARS = 610;
@@ -67,6 +68,11 @@ export default class SortingVisualizer extends React.Component {
     play_animations(animations);
   }
 
+  selectionSort() {
+    const animations = getSelectionSortAnimations(this.state.array);
+    play_animations(animations);
+  }
+
   bogoSort() {
     const animations = getBogoSortAnimations(this.state.array);
     play_animations(animations);
@@ -105,6 +111,7 @@ export default class SortingVisualizer extends React.Component {
         <button onClick={() => this.nearlySorted()}>Generate New Nearly Sorted Array</button>
         <button onClick={() => this.mergeSort()}>Merge Sort</button>
         <button onClick={() => this.quickSort()}>Quick Sort</button>
+        <button onClick={() => this.selectionSort()}>Selection Sort</button>
         <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
         <button onClick={() => this.cocktailShakerSort()}>Cocktail Shaker Sort</button>
         <button onClick={() => this.bogoSort()}>Bogo Sort</button>

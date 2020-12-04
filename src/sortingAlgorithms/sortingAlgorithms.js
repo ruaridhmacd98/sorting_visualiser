@@ -18,6 +18,12 @@ export function getQuickSortAnimations(array) {
   return animations;
 }
 
+export function getSelectionSortAnimations(array) {
+  const animations = [];
+  selectionSort(array, animations);
+  return animations;
+}
+
 export function getBogoSortAnimations(array) {
   const animations = [];
   bogoSort(array, animations);
@@ -41,6 +47,19 @@ function swap(
   array[j] = tmp;
   animations.push([j, tmp]);
 return [array, animations];
+}
+
+function selectionSort(array, animations) {
+  for (var i = 0; i < array.length; i++){
+    let min = i;
+    for(let j = i+1; j < array.length; j++){
+      swap(j, j, array, animations)
+      if(array[j] < array[min]) {
+        min = j;
+      }
+    }
+    swap(i, min, array, animations)
+  }
 }
 
 function bogoSort(array, animations) {
