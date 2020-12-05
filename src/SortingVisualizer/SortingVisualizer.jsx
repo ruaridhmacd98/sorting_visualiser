@@ -1,21 +1,16 @@
 import React from 'react';
 import Select from 'react-select';
 import 'react-dropdown/style.css';
-import {getMergeSort} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getBubbleSort} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getCocktailSort} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getQuickSort} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getSelectionSort} from '../sortingAlgorithms/sortingAlgorithms.js';
-import {getBogoSort} from '../sortingAlgorithms/sortingAlgorithms.js';
+import * as sorting from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 const algorithms = [
-  { value: getMergeSort, label: 'Merge Sort' },
-  { value: getQuickSort, label: 'Quick Sort' },
-  { value: getSelectionSort, label: 'Selection Sort' },
-  { value: getCocktailSort, label: 'Cocktail Shaker Sort' },
-  { value: getBubbleSort, label: 'Bubble Sort' },
-  { value: getBogoSort, label: 'Bogo Sort' },
+  { value: sorting.getMergeSort, label: 'Merge Sort' },
+  { value: sorting.getQuickSort, label: 'Quick Sort' },
+  { value: sorting.getSelectionSort, label: 'Selection Sort' },
+  { value: sorting.getCocktailSort, label: 'Cocktail Shaker Sort' },
+  { value: sorting.getBubbleSort, label: 'Bubble Sort' },
+  { value: sorting.getBogoSort, label: 'Bogo Sort' },
 ];
 
 const arrays = [
@@ -103,7 +98,7 @@ function play_animations (animations) {
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
         setTimeout(() => {
-          const [barOneIdx, newHeight] = animations[i];
+          const [barOneIdx, newHeight] = animations.shift();
           const barOneStyle = arrayBars[barOneIdx].style;
           barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
         }, i * ANIMATION_SPEED_MS);

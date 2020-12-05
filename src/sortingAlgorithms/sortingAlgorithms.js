@@ -1,68 +1,64 @@
+const animations = [];
+
 export function getBubbleSort(array) {
-  const animations = [];
   if (array.length <= 1) return array;
-  bubbleSort(array, animations);
+  bubbleSort(array);
   return animations;
 }
 
 export function getCocktailSort(array) {
-  const animations = [];
   if (array.length <= 1) return array;
-  cocktailSort(array, animations);
+  cocktailSort(array);
   return animations;
 }
 
 export function getQuickSort(array) {
-  const animations = [];
-  quickSort(array, animations, 0, array.length-1);
+  quickSort(array, 0, array.length-1);
   return animations;
 }
 
 export function getSelectionSort(array) {
-  const animations = [];
-  selectionSort(array, animations);
+  selectionSort(array);
   return animations;
 }
 
 export function getBogoSort(array) {
-  const animations = [];
-  bogoSort(array, animations);
+  bogoSort(array);
   return animations;
 }
 
 export function getMergeSort(array) {
-  const animations = [];
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
-  mergeSort(array, 0, array.length - 1, auxiliaryArray, animations);
+  mergeSort(array, 0, array.length - 1, auxiliaryArray);
   return animations;
 }
 
 function swap(
-  i, j, array, animations
+  i, j, array
 ) {
   let tmp = array[i];
   array[i] = array[j];
   animations.push([i, array[j]]);
   array[j] = tmp;
   animations.push([j, tmp]);
-return [array, animations];
+return array;
 }
 
-function selectionSort(array, animations) {
+function selectionSort(array) {
   for (var i = 0; i < array.length; i++){
     let min = i;
     for(let j = i+1; j < array.length; j++){
-      swap(j, j, array, animations)
+      swap(j, j, array)
       if(array[j] < array[min]) {
         min = j;
       }
     }
-    swap(i, min, array, animations)
+    swap(i, min, array)
   }
 }
 
-function bogoSort(array, animations) {
+function bogoSort(array) {
   function isSorted (array){
         for(var i = 1; i < array.length; i++){
             if (array[i-1] > array[i]) {
@@ -72,12 +68,12 @@ function bogoSort(array, animations) {
         return true;
     };
 
-  function shuffle(array, animations){
+  function shuffle(array){
         var count = array.length, index;
         while(count > 0){
             index = Math.floor(Math.random() * array.length);
             count--;
-            [array, animations] = swap(count, index, array, animations)
+            array = swap(count, index, array)
         }
         return array;
   }
@@ -87,7 +83,7 @@ function bogoSort(array, animations) {
         const max_tries = 500;
         var count = 0;
         while(!sorted && (count<max_tries)){
-            array = shuffle(array, animations);
+            array = shuffle(array);
             sorted = isSorted(array);
             count ++;
         }
@@ -97,21 +93,21 @@ function bogoSort(array, animations) {
     return sort(array);
 }
 
-function quickSort(array, animations, left, right) {
-  function partition(array, animations, left, right) {
+function quickSort(array, left, right) {
+  function partition(array, left, right) {
     var pivot = array[Math.floor((right + left) / 2)],
       i = left, j = right;
     while (i <= j) {
       while (array[i] < pivot){
-        [array, animations] = swap(i, i, array, animations);
+        array = swap(i, i, array);
         i++;
       }
       while (array[j] > pivot){
-        [array, animations] = swap(i, i, array, animations);
+        array = swap(i, i, array);
         j--;
       }
       if (i <= j){
-        [array, animations] = swap(i, j, array, animations);
+        array = swap(i, j, array);
         i++; j--;
       }
     }
@@ -120,17 +116,17 @@ function quickSort(array, animations, left, right) {
 
   var index;
   if (array.length > 1) {
-    index = partition(array, animations, left, right)
+    index = partition(array, left, right)
     if (left < index - 1) {
-      quickSort(array, animations, left, index-1)
+      quickSort(array, left, index-1)
     }
     if (right > index) {
-      quickSort(array, animations, index, right)
+      quickSort(array, index, right)
     }
   }
 }
 
-function cocktailSort(array, animations) {
+function cocktailSort(array) {
 
     let n = array.length;
     let sorted = false;
@@ -140,11 +136,11 @@ function cocktailSort(array, animations) {
         sorted = true;
         for (let i = 0; i < n - 1; i++) {
             if (array[i] > array[i + 1]){
-              [array, animations] = swap(i, i+1, array, animations)
+              array = swap(i, i+1, array)
                sorted = false;
             }
             else {
-              [array, animations] = swap(i, i, array, animations)
+              array = swap(i, i, array)
             }
 
    }
@@ -155,11 +151,11 @@ function cocktailSort(array, animations) {
 
         for (let j = n - 1; j > 0; j--) {
             if (array[j-1] > array[j]) {
-                [array, animations] = swap(j, j-1, array, animations)
+                array = swap(j, j-1, array)
                 sorted = false;
             }
             else {
-                [array, animations] = swap(j, j, array, animations)
+                array = swap(j, j, array)
             }
         }
     }
@@ -167,16 +163,15 @@ function cocktailSort(array, animations) {
 
 function bubbleSort(
   array,
-  animations,
 ) {
   let len = array.length;
   for (let i = 0; i < len; i++) {
     for (let j = 0; j < len - 1 - i; j++) {
       if (array[j] > array[j + 1]) {
-        [array, animations] = swap(j, j+1, array, animations)
+        array = swap(j, j+1, array)
       }
       else {
-        [array, animations] = swap(j, j, array, animations)
+        array = swap(j, j, array)
       }
     }
   }
@@ -187,13 +182,12 @@ function mergeSort(
   startIdx,
   endIdx,
   auxiliaryArray,
-  animations,
 ) {
   if (startIdx === endIdx) return;
   const middleIdx = Math.floor((startIdx + endIdx) / 2);
-  mergeSort(auxiliaryArray, startIdx, middleIdx, mainArray, animations);
-  mergeSort(auxiliaryArray, middleIdx + 1, endIdx, mainArray, animations);
-  doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray, animations);
+  mergeSort(auxiliaryArray, startIdx, middleIdx, mainArray);
+  mergeSort(auxiliaryArray, middleIdx + 1, endIdx, mainArray);
+  doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray);
 }
 
 function doMerge(
@@ -202,7 +196,6 @@ function doMerge(
   middleIdx,
   endIdx,
   auxiliaryArray,
-  animations,
 ) {
   let k = startIdx;
   let i = startIdx;
