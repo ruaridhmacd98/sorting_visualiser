@@ -27,6 +27,11 @@ export function getBogoSort(array) {
   return animations;
 }
 
+export function getHeapSort(array) {
+  heapSort(array);
+  return animations;
+}
+
 export function getMergeSort(array) {
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
@@ -45,6 +50,40 @@ function swap(
 return array;
 }
 
+var array_length;
+function heapSort(array) {
+  function heap_root(array, i) {
+    var left = 2 * i + 1;
+    var right = 2 * i + 2;
+    var max = i;
+
+    if (left < array_length && array[left] > array[max]) {
+        swap(left, left, array);
+        max = left;
+    }
+
+    if (right < array_length && array[right] > array[max])     {
+        swap(right, right, array);
+        max = right;
+    }
+
+    if (max !== i) {
+        swap(i, max, array);
+        heap_root(array, max);
+    }
+  }
+
+    array_length = array.length;
+    for (var i = Math.floor(array_length / 2); i >= 0; i -= 1)      {
+        heap_root(array, i);
+      }
+
+    for (i = array.length - 1; i > 0; i--) {
+        swap(0, i, array);
+        array_length--;
+        heap_root(array, 0);
+    }
+}
 function selectionSort(array) {
   for (var i = 0; i < array.length; i++){
     let min = i;
