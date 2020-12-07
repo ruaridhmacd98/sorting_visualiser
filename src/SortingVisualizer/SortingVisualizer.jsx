@@ -62,12 +62,14 @@ export default class SortingVisualizer extends React.Component {
     return (
       <div className="array-container">
 	<Select
+	  className='choices'
           onChange={this.selectAlgorithm}
           options={algorithms}
 	  placeholder='Select Sorting Algorithm'
         />
         <button onClick={() => this.sort()}>Sort</button>
 	<Select
+	  className='choices'
           onChange={(e) => this.chooseArray(e)}
           options={arrays}
 	  placeholder='Select Starting Array'
