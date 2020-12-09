@@ -6,6 +6,12 @@ export function getBubbleSort(array) {
   return animations;
 }
 
+export function getCombSort(array) {
+  if (array.length <= 1) return array;
+  combSort(array);
+  return animations;
+}
+
 export function getCocktailSort(array) {
   if (array.length <= 1) return array;
   cocktailSort(array);
@@ -230,6 +236,21 @@ function cocktailSort(array) {
             }
         }
     }
+}
+
+function combSort(array){
+  var interval = Math.floor(array.length/1.3);
+  while (interval > 0) {
+    for(var i=0; i+interval<array.length; i+=1) {
+      if (array[i] > array[i+interval]) {
+	array = swap(i, i+interval, array)
+      }else {
+	array = swap(i, i, array)
+      }
+    }
+    interval = Math.floor(interval/1.3);
+  }
+  return array;
 }
 
 function bubbleSort(

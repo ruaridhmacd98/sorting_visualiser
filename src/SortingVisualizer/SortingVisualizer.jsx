@@ -12,6 +12,7 @@ const algorithms = [
   { value: sorting.getShellSort, label: 'Shell Sort' },
   { value: sorting.getCocktailSort, label: 'Cocktail Shaker Sort' },
   { value: sorting.getBubbleSort, label: 'Bubble Sort' },
+  { value: sorting.getCombSort, label: 'Comb Sort' },
   { value: sorting.getBogoSort, label: 'Bogo Sort' },
   { value: sorting.getHeapSort, label: 'Heap Sort' },
 ];
