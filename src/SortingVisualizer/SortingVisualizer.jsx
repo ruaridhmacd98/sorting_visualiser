@@ -8,6 +8,8 @@ const algorithms = [
   { value: sorting.getMergeSort, label: 'Merge Sort' },
   { value: sorting.getQuickSort, label: 'Quick Sort' },
   { value: sorting.getSelectionSort, label: 'Selection Sort' },
+  { value: sorting.getInsertionSort, label: 'Insertion Sort' },
+  { value: sorting.getShellSort, label: 'Shell Sort' },
   { value: sorting.getCocktailSort, label: 'Cocktail Shaker Sort' },
   { value: sorting.getBubbleSort, label: 'Bubble Sort' },
   { value: sorting.getBogoSort, label: 'Bogo Sort' },
@@ -61,19 +63,21 @@ export default class SortingVisualizer extends React.Component {
 
     return (
       <div className="array-container">
+	<div>
 	<Select
 	  className='choices'
           onChange={this.selectAlgorithm}
           options={algorithms}
 	  placeholder='Select Sorting Algorithm'
         />
-        <button onClick={() => this.sort()}>Sort</button>
+        <button className="button"  onClick={() => this.sort()}>Sort</button>
 	<Select
 	  className='choices'
           onChange={(e) => this.chooseArray(e)}
           options={arrays}
 	  placeholder='Select Starting Array'
         />
+	</div>
 	<br/>
         {array.map((value, idx) => (
           <div

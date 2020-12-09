@@ -22,6 +22,16 @@ export function getSelectionSort(array) {
   return animations;
 }
 
+export function getInsertionSort(array) {
+  insertionSort(array);
+  return animations;
+}
+
+export function getShellSort(array) {
+  shellSort(array);
+  return animations;
+}
+
 export function getBogoSort(array) {
   bogoSort(array);
   return animations;
@@ -88,13 +98,35 @@ function selectionSort(array) {
   for (var i = 0; i < array.length; i++){
     let min = i;
     for(let j = i+1; j < array.length; j++){
-      swap(j, j, array)
+      /* swap(j, j, array) */ 
       if(array[j] < array[min]) {
         min = j;
       }
     }
     swap(i, min, array)
   }
+}
+
+function insertionSort(array) {
+    let n = array.length;
+        for (let i = 1; i < n; i++) {
+            let j = i;
+            while ((j > 0) && (array[j-1] > array[j])) {
+		array = swap(j-1, j, array)
+                j--;
+            }
+        }
+    return array;
+}
+
+function shellSort (array) {
+    for (var h = array.length; h > 0; h = parseInt(h / 2)) {
+        for (var i = h; i < array.length; i++) {
+            for (var j = i; j >= h && array[j] < array[j - h]; j -= h)
+		array = swap(j-h, j, array)
+        }
+    }
+    return array;
 }
 
 function bogoSort(array) {
