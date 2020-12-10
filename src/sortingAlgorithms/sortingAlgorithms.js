@@ -29,7 +29,7 @@ export function getSelectionSort(array) {
 }
 
 export function getInsertionSort(array) {
-  insertionSort(array);
+  insertionSort(array, 0, array.length);
   return animations;
 }
 
@@ -44,7 +44,7 @@ export function getBogoSort(array) {
 }
 
 export function getHeapSort(array) {
-  heapSort(array);
+  heapSort(array, Math.floor(array.length/2), array.length);
   return animations;
 }
 
@@ -55,56 +55,45 @@ export function getMergeSort(array) {
   return animations;
 }
 
-function swap(
-  i, j, array
-) {
+function swap(i, j, array) {
   let tmp = array[i];
   array[i] = array[j];
   animations.push([i, array[j]]);
   array[j] = tmp;
   animations.push([j, tmp]);
-return array;
+  return array;
 }
 
-var array_length;
-function heapSort(array) {
-  function heap_root(array, i) {
-    var left = 2 * i + 1;
-    var right = 2 * i + 2;
-    var max = i;
-
-    if (left < array_length && array[left] > array[max]) {
-        swap(left, left, array);
-        max = left;
-    }
-
-    if (right < array_length && array[right] > array[max])     {
-        swap(right, right, array);
-        max = right;
-    }
-
-    if (max !== i) {
-        swap(i, max, array);
-        heap_root(array, max);
-    }
+function heap_root(array, i, left, right) {
+  var left_child = 2 * (i-left) + 1 + left;
+  var right_child = 2 * (i-left) + 2 + left;
+  var max = i;
+  if (left_child < right && array[left_child] > array[max]) {
+      max = left_child;
   }
+  if (right_child < right && array[right_child] > array[max])     {
+      max = right_child;
+  }
+  swap(i, max, array);
+  if (max !== i) {
+      heap_root(array, max, left, right);
+  }
+}
 
-    array_length = array.length;
-    for (var i = Math.floor(array_length / 2); i >= 0; i -= 1)      {
-        heap_root(array, i);
-      }
-
-    for (i = array.length - 1; i > 0; i--) {
-        swap(0, i, array);
-        array_length--;
-        heap_root(array, 0);
-    }
+function heapSort(array, left, right) {
+  for (var i = left+Math.floor((right-left)/2); i >= left; i -= 1)      {
+      heap_root(array, i, left, right);
+  }
+  for (i = right-1; i >= left; i--) {
+      swap(left, i, array);
+      heap_root(array, left, left, right);
+  }
 }
 function selectionSort(array) {
   for (var i = 0; i < array.length; i++){
     let min = i;
     for(let j = i+1; j < array.length; j++){
-      /* swap(j, j, array) */ 
+      /* swap(j, j, array) */
       if(array[j] < array[min]) {
         min = j;
       }
@@ -113,11 +102,10 @@ function selectionSort(array) {
   }
 }
 
-function insertionSort(array) {
-    let n = array.length;
-        for (let i = 1; i < n; i++) {
+function insertionSort(array, left, right) {
+        for (let i = left+1; i < right; i++) {
             let j = i;
-            while ((j > 0) && (array[j-1] > array[j])) {
+            while ((j > left) && (array[j-1] > array[j])) {
 		array = swap(j-1, j, array)
                 j--;
             }
@@ -166,31 +154,30 @@ function bogoSort(array) {
         }
         return array;
     }
+    sort(array);
+}
 
-    return sort(array);
+function partition(array, left, right) {
+  var pivot = array[Math.floor((right + left) / 2)],
+    i = left, j = right;
+  while (i <= j) {
+    while (array[i] < pivot){
+      array = swap(i, i, array);
+      i++;
+    }
+    while (array[j] > pivot){
+      array = swap(i, i, array);
+      j--;
+    }
+    if (i <= j){
+      array = swap(i, j, array);
+      i++; j--;
+    }
+  }
+  return i;
 }
 
 function quickSort(array, left, right) {
-  function partition(array, left, right) {
-    var pivot = array[Math.floor((right + left) / 2)],
-      i = left, j = right;
-    while (i <= j) {
-      while (array[i] < pivot){
-        array = swap(i, i, array);
-        i++;
-      }
-      while (array[j] > pivot){
-        array = swap(i, i, array);
-        j--;
-      }
-      if (i <= j){
-        array = swap(i, j, array);
-        i++; j--;
-      }
-    }
-    return i;
-  }
-
   var index;
   if (array.length > 1) {
     index = partition(array, left, right)
@@ -207,25 +194,19 @@ function cocktailSort(array) {
 
     let n = array.length;
     let sorted = false;
-    console.log(n)
-
     while (!sorted) {
         sorted = true;
         for (let i = 0; i < n - 1; i++) {
             if (array[i] > array[i + 1]){
               array = swap(i, i+1, array)
                sorted = false;
-            }
-            else {
+            } else {
               array = swap(i, i, array)
             }
-
-   }
-
-   if (sorted)
-       break;
-   sorted = true;
-
+	}
+        if (sorted)
+            break;
+        sorted = true;
         for (let j = n - 1; j > 0; j--) {
             if (array[j-1] > array[j]) {
                 array = swap(j, j-1, array)
@@ -235,7 +216,7 @@ function cocktailSort(array) {
                 array = swap(j, j, array)
             }
         }
-    }
+   }
 }
 
 function combSort(array){
@@ -250,12 +231,9 @@ function combSort(array){
     }
     interval = Math.floor(interval/1.3);
   }
-  return array;
 }
 
-function bubbleSort(
-  array,
-) {
+function bubbleSort(array) {
   let len = array.length;
   for (let i = 0; i < len; i++) {
     for (let j = 0; j < len - 1 - i; j++) {
