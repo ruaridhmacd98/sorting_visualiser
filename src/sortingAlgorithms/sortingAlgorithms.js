@@ -23,6 +23,11 @@ export function getQuickSort(array) {
   return animations;
 }
 
+export function getGnomeSort(array) {
+  gnomeSort(array, 0, array.length-1);
+  return animations;
+}
+
 export function getSelectionSort(array) {
   selectionSort(array);
   return animations;
@@ -121,7 +126,7 @@ function selectionSort(array) {
   for (var i = 0; i < array.length; i++){
     let min = i;
     for(let j = i+1; j < array.length; j++){
-      /* swap(j, j, array) */
+      swap(j, j, array)
       if(array[j] < array[min]) {
         min = j;
       }
@@ -140,6 +145,21 @@ function insertionSort(array, left, right) {
         }
     return array;
 }
+
+function gnomeSort(array){
+   const l = array.length;
+   let i = 1;
+   while (i < l) {
+       if (i > 0 && array[i - 1] > array[i]) {
+	   swap(i, i-1, array)
+           i--;
+       } else {
+	   swap(i, i, array)
+           i++;
+       }
+   }
+   return array;
+};
 
 function shellSort (array) {
     for (var h = array.length; h > 0; h = parseInt(h / 2)) {
