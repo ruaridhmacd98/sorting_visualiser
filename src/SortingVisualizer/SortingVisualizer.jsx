@@ -5,6 +5,7 @@ import * as sorting from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 const algorithms = [
+  { value: sorting.getIntroSort, label: 'Intro Sort' },
   { value: sorting.getMergeSort, label: 'Merge Sort' },
   { value: sorting.getQuickSort, label: 'Quick Sort' },
   { value: sorting.getSelectionSort, label: 'Selection Sort' },

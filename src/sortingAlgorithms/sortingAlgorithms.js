@@ -48,6 +48,11 @@ export function getHeapSort(array) {
   return animations;
 }
 
+export function getIntroSort(array) {
+  introSort(array);
+  return animations;
+}
+
 export function getMergeSort(array) {
   if (array.length <= 1) return array;
   const auxiliaryArray = array.slice();
@@ -62,6 +67,28 @@ function swap(i, j, array) {
   array[j] = tmp;
   animations.push([j, tmp]);
   return array;
+}
+
+var size_threshold = 16;
+function introSort(array){
+  function floor_lg(array) {
+      return (Math.floor(Math.log(array)/Math.log(2))) << 0;
+  }
+  introsort_loop(array, 0, array.length, 2 * floor_lg(array.length));
+}
+
+function introsort_loop (array, left, right, depth_limit) {
+    while (right-left > size_threshold) {
+        if (depth_limit === 0) {
+            heapSort(array, left, right);
+            return;
+        }
+        depth_limit=depth_limit-1;
+        var p = partition(array, left, right-1);
+        introsort_loop(array, p, right, depth_limit);
+        right = p;
+    }
+    insertionSort(array, left, right);
 }
 
 function heap_root(array, i, left, right) {
@@ -89,6 +116,7 @@ function heapSort(array, left, right) {
       heap_root(array, left, left, i);
   }
 }
+
 function selectionSort(array) {
   for (var i = 0; i < array.length; i++){
     let min = i;
