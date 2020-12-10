@@ -44,7 +44,7 @@ export function getBogoSort(array) {
 }
 
 export function getHeapSort(array) {
-  heapSort(array, Math.floor(array.length/2), array.length);
+  heapSort(array, 0, array.length);
   return animations;
 }
 
@@ -81,12 +81,12 @@ function heap_root(array, i, left, right) {
 }
 
 function heapSort(array, left, right) {
-  for (var i = left+Math.floor((right-left)/2); i >= left; i -= 1)      {
+  for (var i = left+Math.ceil((right-left)/2); i >= left; i -= 1)      {
       heap_root(array, i, left, right);
   }
   for (i = right-1; i >= left; i--) {
       swap(left, i, array);
-      heap_root(array, left, left, right);
+      heap_root(array, left, left, i);
   }
 }
 function selectionSort(array) {
