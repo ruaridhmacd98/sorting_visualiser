@@ -5,6 +5,7 @@ import * as sorting from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 const algorithms = [
+  { value: sorting.getStringSort, label: 'String Sort' },
   { value: sorting.getIntroSort, label: 'Intro Sort' },
   { value: sorting.getMergeSort, label: 'Merge Sort' },
   { value: sorting.getQuickSort, label: 'Quick Sort' },
@@ -23,12 +24,6 @@ const arrays = [
   { value: randomArray, label: 'Random Array' },
   { value: reversedArray, label: 'Reversed Array' },
   { value: nearlySorted, label: 'Almost Sorted Array' },
-];
-
-const speeds = [
-  { value: 0.1, label: 'Normal Speed' },
-  { value: 0.05, label: 'Double Speed' },
-  { value: 0.025, label: 'Quadruple Speed' },
 ];
 
 const NUMBER_OF_ARRAY_BARS = 610;
@@ -54,10 +49,6 @@ export default class SortingVisualizer extends React.Component {
     var func = arrayFunc.value
     const array = func()
     this.setState({array});
-  }
-
-  selectSpeed = delay => {
-    this.setState({animationDelay: delay});
   }
 
   sort() {

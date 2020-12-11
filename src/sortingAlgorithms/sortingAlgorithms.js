@@ -1,5 +1,25 @@
 const animations = [];
 
+export function getStringSort(array) {
+  // eslint-disable-next-line
+  const sortFunc = new Function('array', 'swap', 'animations', stringSort)
+  sortFunc(array, swap, animations);
+  return animations;
+}
+
+const stringSort = `
+   const l = array.length;
+   let i = 1;
+   while (i < l) {
+       if (i > 0 && array[i - 1] > array[i]) {
+	   swap(i, i-1, array)
+           i--;
+       } else {
+           i++;
+       }
+   }
+`;
+
 export function getBubbleSort(array) {
   if (array.length <= 1) return array;
   bubbleSort(array);
@@ -143,7 +163,6 @@ function insertionSort(array, left, right) {
                 j--;
             }
         }
-    return array;
 }
 
 function gnomeSort(array){
@@ -158,7 +177,6 @@ function gnomeSort(array){
            i++;
        }
    }
-   return array;
 };
 
 function shellSort (array) {
@@ -168,7 +186,6 @@ function shellSort (array) {
 		array = swap(j-h, j, array)
         }
     }
-    return array;
 }
 
 function bogoSort(array) {
