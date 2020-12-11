@@ -1,8 +1,8 @@
 const animations = [];
 
-export function getStringSort(array) {
+export function getUserAlgo(array, string) {
   // eslint-disable-next-line
-  const sortFunc = new Function('array', 'swap', 'animations', stringSort)
+  const sortFunc = new Function('array', 'swap', 'animations', string)
   sortFunc(array, swap, animations);
   return animations;
 }

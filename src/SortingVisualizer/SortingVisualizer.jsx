@@ -3,9 +3,10 @@ import Select from 'react-select';
 import 'react-dropdown/style.css';
 import * as sorting from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
+import 'reactjs-popup/dist/index.css';
+import Tutorial from './tutorial.jsx';
 
 const algorithms = [
-  { value: sorting.getStringSort, label: 'String Sort' },
   { value: sorting.getIntroSort, label: 'Intro Sort' },
   { value: sorting.getMergeSort, label: 'Merge Sort' },
   { value: sorting.getQuickSort, label: 'Quick Sort' },
@@ -36,6 +37,7 @@ export default class SortingVisualizer extends React.Component {
       array: [],
       sortingAlgorithm: null,
       animationDelay: 0.1,
+      userAlgo: '',
     };
   }
 
@@ -43,12 +45,23 @@ export default class SortingVisualizer extends React.Component {
     this.setState(
       { sortingAlgorithm: sortingAlgorithm },
     );
+    this.chooseArray(arrays[0])
   };
 
   chooseArray(arrayFunc) {
     var func = arrayFunc.value
     const array = func()
     this.setState({array});
+  }
+
+  setUserAlgo = (event) => {
+    this.setState({ userAlgo: event.target.value });
+    console.log(this.state.userAlgo)
+  }
+
+  runUserAlgo() {
+    const animations = sorting.getUserAlgo(this.state.array, this.state.userAlgo);
+    this.play_animations(animations);
   }
 
   sort() {
@@ -73,6 +86,7 @@ export default class SortingVisualizer extends React.Component {
 
   render() {
     const {array} = this.state;
+    var userFunc = this.state.userAlgo.replace('\\n', '\n');
 
     return (
       <div className="array-container">
@@ -90,6 +104,8 @@ export default class SortingVisualizer extends React.Component {
           options={arrays}
 	  placeholder='Select Starting Array'
         />
+	    <Tutorial/>
+        <button className="button"  onClick={() => this.runUserAlgo()}>Run Custom Algorithm</button>
 	</div>
 	<br/>
         {array.map((value, idx) => (
