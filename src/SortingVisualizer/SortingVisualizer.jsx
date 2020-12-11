@@ -25,7 +25,12 @@ const arrays = [
   { value: nearlySorted, label: 'Almost Sorted Array' },
 ];
 
-const ANIMATION_SPEED_MS = 0.1;
+const speeds = [
+  { value: 0.1, label: 'Normal Speed' },
+  { value: 0.05, label: 'Double Speed' },
+  { value: 0.025, label: 'Quadruple Speed' },
+];
+
 const NUMBER_OF_ARRAY_BARS = 610;
 
 export default class SortingVisualizer extends React.Component {
@@ -35,6 +40,7 @@ export default class SortingVisualizer extends React.Component {
     this.state = {
       array: [],
       sortingAlgorithm: null,
+      animationDelay: 0.1,
     };
   }
 
@@ -45,17 +51,30 @@ export default class SortingVisualizer extends React.Component {
   };
 
   chooseArray(arrayFunc) {
-	  console.log(arrayFunc)
     var func = arrayFunc.value
-	  console.log(func)
     const array = func()
     this.setState({array});
+  }
+
+  selectSpeed = delay => {
+    this.setState({animationDelay: delay});
   }
 
   sort() {
     var algorithm = this.state.sortingAlgorithm.value;
     const animations = algorithm(this.state.array);
-    play_animations(animations);
+    this.play_animations(animations);
+  }
+
+  play_animations (animations) {
+    for (let i = 0; i < animations.length; i++) {
+      const arrayBars = document.getElementsByClassName('array-bar');
+        setTimeout(() => {
+          const [index, newValue] = animations.shift();
+          const style = arrayBars[index].style;
+          style.backgroundColor = `hsl(${newValue}, 100%, 50%)`;
+        }, i * this.state.animationDelay);
+      }
   }
 
   componentDidMount() {
@@ -103,17 +122,6 @@ function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-
-function play_animations (animations) {
-    for (let i = 0; i < animations.length; i++) {
-      const arrayBars = document.getElementsByClassName('array-bar');
-        setTimeout(() => {
-          const [barOneIdx, newHeight] = animations.shift();
-          const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.backgroundColor = `hsl(${newHeight}, 100%, 50%)`;
-        }, i * ANIMATION_SPEED_MS);
-      }
-}
 
 function randomArray() {
   const array = [];
