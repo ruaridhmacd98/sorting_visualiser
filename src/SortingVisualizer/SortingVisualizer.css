@@ -10,14 +10,30 @@
 }
 
 .choices {
-  width: 250px;
+  width: 500px;
   height: 25px;
   float: left;
+  border-radius: 12px;
+  transition-duration: 0.4s;
+}
+
+textarea {
+     width: 100%;
+     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+     box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.select {
+  font-size: 24px;
+  border-radius: 12px;
+  transition-duration: 0.4s;
+  margin-left: 30px;
+  width: 250px;
 }
 
 .button {
-  font-size: 16px;
-  height: 25px;
+  font-size: 24px;
   border-radius: 12px;
   transition-duration: 0.4s;
   margin-left: 30px;
@@ -28,9 +44,12 @@
   color: white;
 }
 
-textarea {
-     width: 100%;
-     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-     box-sizing: border-box;         /* Opera/IE 8+ */
+.controls {
+  font-size: 30px;
+  background-color: gray;
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 30px;
 }
+
